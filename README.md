@@ -1,38 +1,40 @@
 # Entrepreneurship Decision-Making Simulator
 
-A web-based simulator that helps aspiring entrepreneurs understand how different business decisions impact their startup's success.
+A web-based simulator that helps aspiring entrepreneurs practice making key business decisions and receive AI-generated feedback on their choices.
 
 ## Features
 
-- **Business Configuration**: Set up your startup parameters
-  - Market size selection
-  - Funding status selection
-  - Team size selection
-  - Pricing strategy selection
-  - Industry difficulty adjustment
-  - Black swan event probability
-- **AI Assistant**: Get help understanding any business concept
-- **Simulation Modules**:
-  - KPI Setting Simulation
-  - Risk Management Challenges
-- Intuitive navigation with back buttons
-- Responsive design for all devices
+- Progressive scenario-based decision making
+- AI-generated evaluations of choices
+- Comprehensive feedback with pros, cons, and suggestions
+- Recommended resources for further learning
+- Session persistence with ability to continue later
 
 ## How to Use
 
-1. Clone this repository or download the files
-2. Open `index.html` in your web browser
-3. Configure your business parameters
-4. Use the AI assistant if you need help with any terms
-5. Choose a simulation module to test your decision-making
-6. Navigate freely between screens using the back buttons
+1. Clone this repository
+2. Open `index.html` in your browser
+3. Follow the simulation steps
+4. Make decisions and receive feedback
 
-## Publishing to GitHub Pages
+## GitHub Pages Deployment
 
-To publish this simulator to GitHub Pages:
+This project is configured to work with GitHub Pages. To deploy:
 
-1. Create a new GitHub repository
-2. Upload all the files from this project
-3. Go to Settings > Pages
-4. Select the main branch as the source
-5. Your simulator will be published at `https://[
+1. Go to your repository Settings
+2. Navigate to Pages
+3. Select "main" branch and root folder
+4. Click Save
+
+Your simulator will be available at `https://[your-username].github.io/entrepreneurship-simulator/`
+
+## Customization
+
+You can add more scenarios by:
+1. Creating new HTML files in the `scenarios/` folder
+2. Adding corresponding evaluation logic in `js/ai-evaluator.js`
+3. Updating the navigation flow in `js/scenario-handler.js`
+
+## License
+
+MIT License
