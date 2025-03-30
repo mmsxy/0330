@@ -4,22 +4,28 @@ A web-based simulator that helps aspiring entrepreneurs understand how different
 
 ## Features
 
-- Configure your startup with various parameters:
-  - Market size
-  - Funding status
-  - Team size
-  - Pricing strategy
-  - Industry difficulty
+- **Business Configuration**: Set up your startup parameters
+  - Market size selection
+  - Funding status selection
+  - Team size selection
+  - Pricing strategy selection
+  - Industry difficulty adjustment
   - Black swan event probability
-- Get instant feedback on your configuration
-- Receive tailored recommendations based on your choices
+- **AI Assistant**: Get help understanding any business concept
+- **Simulation Modules**:
+  - KPI Setting Simulation
+  - Risk Management Challenges
+- Intuitive navigation with back buttons
+- Responsive design for all devices
 
 ## How to Use
 
 1. Clone this repository or download the files
 2. Open `index.html` in your web browser
-3. Follow the on-screen instructions to configure your startup
-4. View your simulation results and recommendations
+3. Configure your business parameters
+4. Use the AI assistant if you need help with any terms
+5. Choose a simulation module to test your decision-making
+6. Navigate freely between screens using the back buttons
 
 ## Publishing to GitHub Pages
 
@@ -29,15 +35,4 @@ To publish this simulator to GitHub Pages:
 2. Upload all the files from this project
 3. Go to Settings > Pages
 4. Select the main branch as the source
-5. Your simulator will be published at `https://[your-username].github.io/[repository-name]/`
-
-## Customization
-
-You can easily customize:
-- The business parameters in `index.html`
-- The styling in `style.css`
-- The simulation logic and recommendations in `script.js`
-
-## License
-
-This project is open source and available under the MIT License.
+5. Your simulator will be published at `https://[
