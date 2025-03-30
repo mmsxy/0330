@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Entrepreneurship Decision-Making Simulator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AI Entrepreneurship Decision-Making Simulator</h1>
+            <p class="subtitle">Navigate the challenges of starting and growing your business</p>
+        </header>
+
+        <div class="welcome-screen" id="welcomeScreen">
+            <div class="welcome-content">
+                <h2>Welcome to the Simulator!</h2>
+                <p>We're excited to have you join us on this entrepreneurial journey. This simulator is designed to help you navigate the challenges of starting and growing a business by guiding you through key decisions and providing insightful feedback.</p>
+                <p>Explore real-world scenarios, test different strategies, and learn how your choices impact business outcomes.</p>
+                <button id="startBtn" class="btn">Get Started</button>
+            </div>
+        </div>
+
+        <div class="simulator-screen" id="simulatorScreen" style="display: none;">
+            <div class="simulator-header">
+                <h2>Business Configuration</h2>
+                <p>Configure your startup parameters to begin the simulation</p>
+            </div>
+
+            <div class="form-section">
+                <h3>Market Size</h3>
+                <div class="radio-group">
+                    <label><input type="radio" name="marketSize" value="small" checked> Small (&lt;1M)</label>
+                    <label><input type="radio" name="marketSize" value="medium"> Medium (1M-100M)</label>
+                    <label><input type="radio" name="marketSize" value="large"> Large (&gt;100M)</label>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>Funding Status</h3>
+                <div class="radio-group">
+                    <label><input type="radio" name="fundingStatus" value="self" checked> Self-financing</label>
+                    <label><input type="radio" name="fundingStatus" value="secured"> Secured funding</label>
+                </div>
+                <div class="info-tooltip" id="fundingInfo">ℹ️ What is Funding Status?</div>
+                <div class="tooltip-content" id="fundingTooltip">
+                    <p>Funding Status refers to the current stage or condition of a company's financial backing. It indicates how much capital a company has raised and from which sources.</p>
+                    <button class="close-tooltip">Close</button>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>Team Size</h3>
+                <div class="radio-group">
+                    <label><input type="radio" name="teamSize" value="small" checked> Small (1-5)</label>
+                    <label><input type="radio" name="teamSize" value="medium"> Medium (5-20)</label>
+                    <label><input type="radio" name="teamSize" value="large"> Large (&gt;20)</label>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>Pricing Strategy</h3>
+                <div class="radio-group">
+                    <label><input type="radio" name="pricing" value="cost" checked> Cost-based pricing</label>
+                    <label><input type="radio" name="pricing" value="market"> Market-based pricing</label>
+                    <label><input type="radio" name="pricing" value="penetration"> Penetration pricing</label>
+                    <label><input type="radio" name="pricing" value="premium"> Premium pricing</label>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>Industry Environment Difficulty Level</h3>
+                <input type="range" id="difficulty" min="0.1" max="1.0" step="0.1" value="0.5">
+                <span id="difficultyValue">0.5</span>
+            </div>
+
+            <div class="form-section">
+                <h3>Black Swan Events</h3>
+                <label><input type="checkbox" id="blackSwanToggle"> Enable Black Swan Events</label>
+                <div id="blackSwanFrequency" style="display: none;">
+                    <p>Frequency: 0.1% - 1%</p>
+                    <input type="range" id="frequency" min="0.1" max="1.0" step="0.1" value="0.5">
+                    <span id="frequencyValue">0.5%</span>
+                </div>
+            </div>
+
+            <div class="navigation">
+                <button id="nextBtn" class="btn">Next →</button>
+            </div>
+        </div>
+
+        <div class="results-screen" id="resultsScreen" style="display: none;">
+            <h2>Simulation Results</h2>
+            <div id="resultsContent"></div>
+            <button id="restartBtn" class="btn">Start Over</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
