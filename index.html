@@ -3,142 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Entrepreneurship Decision-Making Simulator</title>
-    <link rel="stylesheet" href="style.css">
+    <title>AI Entrepreneurship Simulator</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>AI Entrepreneurship Decision-Making Simulator</h1>
-            <p class="subtitle">Navigate the challenges of starting and growing your business</p>
+            <h1>Welcome to the AI Entrepreneurship Decision-Making Simulator!</h1>
         </header>
-
-        <!-- Welcome Screen -->
-        <div class="welcome-screen" id="welcomeScreen">
-            <div class="welcome-content">
-                <h2>Welcome to the Simulator!</h2>
+        
+        <main>
+            <section class="intro">
                 <p>We're excited to have you join us on this entrepreneurial journey. This simulator is designed to help you navigate the challenges of starting and growing a business by guiding you through key decisions and providing insightful feedback.</p>
-                <p>Explore real-world scenarios, test different strategies, and learn how your choices impact business outcomes.</p>
-                <div class="welcome-features">
-                    <p><span class="checkmark">✔</span> Business Configuration</p>
-                    <p><span class="checkmark">✔</span> KPI Setting Simulation</p>
-                    <p><span class="checkmark">✔</span> Risk Management Challenges</p>
-                </div>
-                <button id="startBtn" class="btn">Get Started</button>
-            </div>
-        </div>
-
-        <!-- Business Configuration Screen -->
-        <div class="simulator-screen" id="simulatorScreen" style="display: none;">
-            <div class="simulator-header">
-                <h2>Business Configuration</h2>
-                <p>Configure your startup parameters to begin the simulation</p>
-            </div>
-
-            <div class="form-section">
-                <h3>Market Size</h3>
-                <div class="radio-group">
-                    <label><input type="radio" name="marketSize" value="small" checked> Small (&lt;1M)</label>
-                    <label><input type="radio" name="marketSize" value="medium"> Medium (1M-100M)</label>
-                    <label><input type="radio" name="marketSize" value="large"> Large (&gt;100M)</label>
-                </div>
-                <button class="ai-help-btn" data-term="marketSize">Ask AI about Market Size</button>
-            </div>
-
-            <div class="form-section">
-                <h3>Funding Status</h3>
-                <div class="radio-group">
-                    <label><input type="radio" name="fundingStatus" value="self" checked> Self-financing</label>
-                    <label><input type="radio" name="fundingStatus" value="secured"> Secured funding</label>
-                </div>
-                <button class="ai-help-btn" data-term="fundingStatus">Ask AI about Funding Status</button>
-            </div>
-
-            <div class="form-section">
-                <h3>Team Size</h3>
-                <div class="radio-group">
-                    <label><input type="radio" name="teamSize" value="small" checked> Small (1-5)</label>
-                    <label><input type="radio" name="teamSize" value="medium"> Medium (5-20)</label>
-                    <label><input type="radio" name="teamSize" value="large"> Large (&gt;20)</label>
-                </div>
-                <button class="ai-help-btn" data-term="teamSize">Ask AI about Team Size</button>
-            </div>
-
-            <div class="form-section">
-                <h3>Pricing Strategy</h3>
-                <div class="radio-group">
-                    <label><input type="radio" name="pricing" value="cost" checked> Cost-based pricing</label>
-                    <label><input type="radio" name="pricing" value="market"> Market-based pricing</label>
-                    <label><input type="radio" name="pricing" value="penetration"> Penetration pricing</label>
-                    <label><input type="radio" name="pricing" value="premium"> Premium pricing</label>
-                </div>
-                <button class="ai-help-btn" data-term="pricingStrategy">Ask AI about Pricing Strategies</button>
-            </div>
-
-            <div class="form-section">
-                <h3>Industry Environment Difficulty Level</h3>
-                <input type="range" id="difficulty" min="0.1" max="1.0" step="0.1" value="0.5">
-                <span id="difficultyValue">0.5</span>
-                <button class="ai-help-btn" data-term="difficulty">Ask AI about Industry Difficulty</button>
-            </div>
-
-            <div class="form-section">
-                <h3>Black Swan Events (Enable + Frequency)</h3>
-                <label><input type="checkbox" id="blackSwanToggle"> Enable Black Swan Events</label>
-                <div id="blackSwanFrequency" style="display: none;">
-                    <p>Frequency: 0.1% - 1%</p>
-                    <input type="range" id="frequency" min="0.1" max="1.0" step="0.1" value="0.5">
-                    <span id="frequencyValue">0.5%</span>
-                </div>
-                <button class="ai-help-btn" data-term="blackSwan">Ask AI about Black Swan Events</button>
-            </div>
-
-            <div class="navigation">
-                <button id="backBtn" class="btn btn-secondary">← Back</button>
-                <button id="nextBtn" class="btn">Next →</button>
-            </div>
-        </div>
-
-        <!-- Module Selection Screen -->
-        <div class="module-screen" id="moduleScreen" style="display: none;">
-            <h2>Select Simulation Module</h2>
-            <p>Choose which aspect of entrepreneurship you'd like to simulate</p>
-            
-            <div class="module-cards">
-                <div class="module-card" id="kpiModule">
-                    <h3>KPI Setting Simulation</h3>
-                    <p>Learn how to set and track Key Performance Indicators for your business</p>
-                    <button class="btn module-btn">Start KPI Simulation</button>
-                </div>
                 
-                <div class="module-card" id="riskModule">
-                    <h3>Risk Management Challenges</h3>
-                    <p>Test your ability to identify and mitigate business risks</p>
-                    <button class="btn module-btn">Start Risk Simulation</button>
-                </div>
-            </div>
+                <p>Explore real-world scenarios, test different strategies, and learn how your choices impact business outcomes. Whether you're identifying market opportunities, managing resources, or negotiating with investors, this simulator will help you sharpen your decision-making skills and build confidence as an entrepreneur.</p>
+                
+                <p>Get ready to make strategic choices and shape the future of your business — let's get started!</p>
+            </section>
             
             <div class="navigation">
-                <button id="backToConfigBtn" class="btn btn-secondary">← Back to Configuration</button>
+                <button id="start-btn" class="btn-primary">Begin Simulation</button>
             </div>
-        </div>
-
-        <!-- AI Help Modal -->
-        <div class="modal" id="aiHelpModal">
-            <div class="modal-content">
-                <span class="close-modal">&times;</span>
-                <h3 id="modalTitle">AI Assistant</h3>
-                <div class="ai-response" id="aiResponse">
-                    <p>Loading AI response...</p>
-                </div>
-                <div class="ai-followup">
-                    <input type="text" id="followupQuestion" placeholder="Ask a follow-up question...">
-                    <button id="askFollowupBtn" class="btn">Ask</button>
-                </div>
-            </div>
-        </div>
+        </main>
     </div>
 
-    <script src="script.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
