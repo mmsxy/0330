@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KPI Setting | Entrepreneurship Simulator</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>KPI Setting Simulation</h1>
+        </header>
+        
+        <main>
+            <section class="scenario-card">
+                <h2>Scenario 1: Setting Growth Goals for a Startup</h2>
+                <p>You've launched a health drink brand that achieved $1 million in sales in the first year. You aim to increase sales by 50% in the second year but face budget constraints and market competition.</p>
+                
+                <h3>Decision Options:</h3>
+                
+                <div class="option-card" data-value="A">
+                    <h4>Option A</h4>
+                    <p>Set a target of $1.5 million and increase spending on advertising and promotions.</p>
+                </div>
+                
+                <div class="option-card" data-value="B">
+                    <h4>Option B</h4>
+                    <p>Set a target of $1.2 million for steady growth while maintaining profitability.</p>
+                </div>
+                
+                <div class="option-card" data-value="C">
+                    <h4>Option C</h4>
+                    <p>Set a target of $2 million, seek new investment, and expand aggressively.</p>
+                </div>
+                
+                <div id="evaluation" style="display: none;">
+                    <h3>Evaluation:</h3>
+                    <div class="evaluation">
+                        <div class="pros-cons">
+                            <div class="pros">
+                                <h4>Pros</h4>
+                                <ul id="pros-list"></ul>
+                            </div>
+                            <div class="cons">
+                                <h4>Cons</h4>
+                                <ul id="cons-list"></ul>
+                            </div>
+                        </div>
+                        
+                        <div class="suggestions">
+                            <h4>Suggestions</h4>
+                            <ul id="suggestions-list"></ul>
+                        </div>
+                        
+                        <div class="resources">
+                            <h4>Recommended Resources</h4>
+                            <div id="resources-list"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <div class="navigation">
+                <button id="back-btn" class="btn btn-secondary">Back</button>
+                <button id="next-btn" class="btn btn-primary" disabled>Next</button>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/scenario-handler.js"></script>
+    <script src="../js/ai-evaluator.js"></script>
+    <script>
+        // Set current scenario
+        sessionStorage.setItem('currentScenario', 'kpi-setting');
+        
+        // Handle option selection
+        const options = document.querySelectorAll('.option-card');
+        const evaluationSection = document.getElementById('evaluation');
+        const prosList = document.getElementById('pros-list');
+        const consList = document.getElementById('cons-list');
+        const suggestionsList = document.getElementById('suggestions-list');
+        const resourcesList = document.getElementById('resources-list');
+        const nextBtn = document.getElementById('next-btn');
+        
+        options.forEach(option => {
+            option.addEventListener('click', async function() {
+                // Remove selected class from all options
+                options.forEach(opt => opt.classList.remove('selected'));
+                
+                // Add selected class to clicked option
+                this.classList.add('selected');
+                
+                // Show loading state
+                evaluationSection.style.display = 'block';
+                evaluationSection.innerHTML = '<p>AI is evaluating your choice... <span class="loading-dots"></span></p>';
+                
+                // Get AI evaluation
+                const choice = this.dataset.value;
+                const evaluation = await aiEvaluator.evaluate('kpi-setting', choice);
+                
+                // Display evaluation
+                evaluationSection.innerHTML = `
+                    <h3>Evaluation:</h3>
+                    <div class="evaluation">
+                        <div class="pros-cons">
+                            <div class="pros">
+                                <h4>Pros</h4>
+                                <ul id="pros-list"></ul>
+                            </div>
+                            <div class="cons">
+                                <h4>Cons</h4>
+                                <ul id="cons-list"></ul>
+                            </div>
+                        </div>
+                        
+                        <div class="suggestions">
+                            <h4>Suggestions</h4>
+                            <ul id="suggestions-list"></ul>
+                        </div>
+                        
+                        <div class="resources">
+                            <h4>Recommended Resources</h4>
+                            <div id="resources-list"></div>
+                        </div>
+                    </div>
+                `;
+                
+                // Populate evaluation
+                evaluation.pros.forEach(pro => {
+                    document.getElementById('pros-list').innerHTML += `<li>${pro}</li>`;
+                });
+                
+                evaluation.cons.forEach(con => {
+                    document.getElementById('cons-list').innerHTML += `<li>${con}</li>`;
+                });
+                
+                evaluation.suggestions.forEach(suggestion => {
+                    document.getElementById('suggestions-list').innerHTML += `<li>${suggestion}</li>`;
+                });
+                
+                evaluation.resources.forEach(resource => {
+                    document.getElementById('resources-list').innerHTML += `
+                        <div class="resource-card">
+                            <h5>${resource.title}</h5>
+                            <p>${resource.description}</p>
+                            <a href="${resource.url}" target="_blank">Visit Resource</a>
+                        </div>
+                    `;
+                });
+                
+                // Enable next button
+                nextBtn.disabled = false;
+                
+                // Store selection
+                sessionStorage.setItem('kpiChoice', choice);
+            });
+        });
+        
+        // Navigation handlers
+        document.getElementById('back-btn').addEventListener('click', function() {
+            window.location.href = 'pricing-strategy.html';
+        });
+        
+        document.getElementById('next-btn').addEventListener('click', function() {
+            window.location.href = 'results.html';
+        });
+    </script>
+</body>
+</html>
