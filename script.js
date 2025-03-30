@@ -2,29 +2,51 @@ document.addEventListener('DOMContentLoaded', function() {
     // DOM Elements
     const welcomeScreen = document.getElementById('welcomeScreen');
     const simulatorScreen = document.getElementById('simulatorScreen');
-    const resultsScreen = document.getElementById('resultsScreen');
+    const moduleScreen = document.getElementById('moduleScreen');
     const startBtn = document.getElementById('startBtn');
     const nextBtn = document.getElementById('nextBtn');
-    const restartBtn = document.getElementById('restartBtn');
-    const fundingInfo = document.getElementById('fundingInfo');
-    const fundingTooltip = document.getElementById('fundingTooltip');
+    const backBtn = document.getElementById('backBtn');
+    const backToConfigBtn = document.getElementById('backToConfigBtn');
     const blackSwanToggle = document.getElementById('blackSwanToggle');
     const blackSwanFrequency = document.getElementById('blackSwanFrequency');
     const difficultySlider = document.getElementById('difficulty');
     const difficultyValue = document.getElementById('difficultyValue');
     const frequencySlider = document.getElementById('frequency');
     const frequencyValue = document.getElementById('frequencyValue');
-    const resultsContent = document.getElementById('resultsContent');
+    const aiHelpBtns = document.querySelectorAll('.ai-help-btn');
+    const aiHelpModal = document.getElementById('aiHelpModal');
+    const closeModal = document.querySelector('.close-modal');
+    const modalTitle = document.getElementById('modalTitle');
+    const aiResponse = document.getElementById('aiResponse');
+    const followupQuestion = document.getElementById('followupQuestion');
+    const askFollowupBtn = document.getElementById('askFollowupBtn');
+    const kpiModuleBtn = document.querySelector('#kpiModule .module-btn');
+    const riskModuleBtn = document.querySelector('#riskModule .module-btn');
+
+    // Current AI context
+    let currentTerm = '';
+    let conversationHistory = [];
 
     // Event Listeners
     startBtn.addEventListener('click', startSimulation);
-    nextBtn.addEventListener('click', showResults);
-    restartBtn.addEventListener('click', restartSimulation);
-    fundingInfo.addEventListener('click', toggleFundingTooltip);
-    document.querySelector('.close-tooltip').addEventListener('click', closeTooltip);
+    nextBtn.addEventListener('click', showModuleSelection);
+    backBtn.addEventListener('click', goBackToWelcome);
+    backToConfigBtn.addEventListener('click', goBackToConfig);
     blackSwanToggle.addEventListener('change', toggleBlackSwanFrequency);
     difficultySlider.addEventListener('input', updateDifficultyValue);
     frequencySlider.addEventListener('input', updateFrequencyValue);
+    aiHelpBtns.forEach(btn => btn.addEventListener('click', showAIHelp));
+    closeModal.addEventListener('click', closeAIHelp);
+    askFollowupBtn.addEventListener('click', askFollowupQuestion);
+    kpiModuleBtn.addEventListener('click', startKPISimulation);
+    riskModuleBtn.addEventListener('click', startRiskSimulation);
+
+    // Close modal when clicking outside
+    window.addEventListener('click', function(event) {
+        if (event.target === aiHelpModal) {
+            closeAIHelp();
+        }
+    });
 
     // Update slider values initially
     updateDifficultyValue();
@@ -36,52 +58,19 @@ document.addEventListener('DOMContentLoaded', function() {
         simulatorScreen.style.display = 'block';
     }
 
-    function showResults() {
+    function showModuleSelection() {
         simulatorScreen.style.display = 'none';
-        resultsScreen.style.display = 'block';
-        
-        // Gather all selected values
-        const marketSize = document.querySelector('input[name="marketSize"]:checked').value;
-        const fundingStatus = document.querySelector('input[name="fundingStatus"]:checked').value;
-        const teamSize = document.querySelector('input[name="teamSize"]:checked').value;
-        const pricingStrategy = document.querySelector('input[name="pricing"]:checked').value;
-        const difficulty = difficultySlider.value;
-        const blackSwanEnabled = blackSwanToggle.checked;
-        const blackSwanFreq = blackSwanToggle.checked ? frequencySlider.value : '0%';
-        
-        // Generate results content
-        let html = `
-            <h3>Your Business Configuration:</h3>
-            <ul>
-                <li><strong>Market Size:</strong> ${getLabelText('marketSize', marketSize)}</li>
-                <li><strong>Funding Status:</strong> ${getLabelText('fundingStatus', fundingStatus)}</li>
-                <li><strong>Team Size:</strong> ${getLabelText('teamSize', teamSize)}</li>
-                <li><strong>Pricing Strategy:</strong> ${getLabelText('pricing', pricingStrategy)}</li>
-                <li><strong>Industry Difficulty:</strong> ${difficulty}/1.0</li>
-                <li><strong>Black Swan Events:</strong> ${blackSwanEnabled ? 'Enabled (' + blackSwanFreq + '%)' : 'Disabled'}</li>
-            </ul>
-            
-            <h3>Simulation Analysis:</h3>
-            <p>${generateAnalysis(marketSize, fundingStatus, teamSize, pricingStrategy, difficulty, blackSwanEnabled, blackSwanFreq)}</p>
-            
-            <h3>Recommendations:</h3>
-            <p>${generateRecommendations(marketSize, fundingStatus, teamSize, pricingStrategy)}</p>
-        `;
-        
-        resultsContent.innerHTML = html;
+        moduleScreen.style.display = 'block';
     }
 
-    function restartSimulation() {
-        resultsScreen.style.display = 'none';
+    function goBackToWelcome() {
+        simulatorScreen.style.display = 'none';
         welcomeScreen.style.display = 'block';
     }
 
-    function toggleFundingTooltip() {
-        fundingTooltip.style.display = fundingTooltip.style.display === 'block' ? 'none' : 'block';
-    }
-
-    function closeTooltip() {
-        fundingTooltip.style.display = 'none';
+    function goBackToConfig() {
+        moduleScreen.style.display = 'none';
+        simulatorScreen.style.display = 'block';
     }
 
     function toggleBlackSwanFrequency() {
@@ -96,107 +85,100 @@ document.addEventListener('DOMContentLoaded', function() {
         frequencyValue.textContent = frequencySlider.value + '%';
     }
 
-    // Helper functions
-    function getLabelText(name, value) {
-        const label = document.querySelector(`input[name="${name}"][value="${value}"]`).parentElement.textContent;
-        return label.trim();
+    function showAIHelp(event) {
+        currentTerm = event.target.dataset.term;
+        conversationHistory = [];
+        
+        // Set modal title based on term
+        modalTitle.textContent = getTermName(currentTerm) + ' - AI Assistant';
+        
+        // Show loading state
+        aiResponse.innerHTML = '<p>Loading AI response...</p>';
+        
+        // Show modal
+        aiHelpModal.style.display = 'block';
+        
+        // Get initial AI response
+        getAIResponse(currentTerm, '');
     }
 
-    function generateAnalysis(marketSize, fundingStatus, teamSize, pricingStrategy, difficulty, blackSwanEnabled, blackSwanFreq) {
-        let analysis = [];
-        
-        // Market size analysis
-        if (marketSize === 'small') {
-            analysis.push("Your target market is relatively small, which may allow for easier customer acquisition but limits growth potential.");
-        } else if (marketSize === 'medium') {
-            analysis.push("You're targeting a substantial market with good growth potential while still being manageable for a startup.");
-        } else {
-            analysis.push("A large market offers significant opportunities but comes with intense competition and higher customer acquisition costs.");
-        }
-        
-        // Funding analysis
-        if (fundingStatus === 'self') {
-            analysis.push("Bootstrapping gives you full control but may limit your growth speed. You'll need to focus on profitability early.");
-        } else {
-            analysis.push("With secured funding, you have more resources to grow quickly, but you'll have pressure to deliver returns to investors.");
-        }
-        
-        // Team size analysis
-        if (teamSize === 'small') {
-            analysis.push("A small team is agile and cost-effective but may struggle with workload as the business grows.");
-        } else if (teamSize === 'medium') {
-            analysis.push("A medium-sized team can handle more complex operations while maintaining good communication.");
-        } else {
-            analysis.push("A large team allows for specialization but requires strong management and higher overhead costs.");
-        }
-        
-        // Pricing analysis
-        if (pricingStrategy === 'cost') {
-            analysis.push("Cost-based pricing ensures profitability but may not reflect the true market value of your product.");
-        } else if (pricingStrategy === 'market') {
-            analysis.push("Market-based pricing helps you stay competitive but requires thorough competitor analysis.");
-        } else if (pricingStrategy === 'penetration') {
-            analysis.push("Penetration pricing can help you gain market share quickly but may be difficult to raise prices later.");
-        } else {
-            analysis.push("Premium pricing positions you as a high-quality option but requires strong differentiation and marketing.");
-        }
-        
-        // Difficulty analysis
-        if (parseFloat(difficulty) > 0.7) {
-            analysis.push("The high industry difficulty means you'll face significant challenges and competition. Differentiation will be key.");
-        } else if (parseFloat(difficulty) > 0.4) {
-            analysis.push("Moderate industry difficulty suggests a balanced competitive landscape with opportunities for growth.");
-        } else {
-            analysis.push("The low industry difficulty indicates favorable conditions, but beware of potential new entrants.");
-        }
-        
-        // Black swan analysis
-        if (blackSwanEnabled) {
-            analysis.push(`With Black Swan events enabled (${blackSwanFreq}% frequency), your business may face unexpected challenges that test your resilience.`);
-        }
-        
-        return analysis.join(' ');
+    function closeAIHelp() {
+        aiHelpModal.style.display = 'none';
+        followupQuestion.value = '';
     }
 
-    function generateRecommendations(marketSize, fundingStatus, teamSize, pricingStrategy) {
-        let recommendations = [];
-        
-        // Market size recommendations
-        if (marketSize === 'small') {
-            recommendations.push("Consider niche marketing strategies to dominate your segment.");
-        } else if (marketSize === 'medium') {
-            recommendations.push("Focus on scalable customer acquisition channels to capture market share.");
-        } else {
-            recommendations.push("Develop a strong USP and consider strategic partnerships to stand out in a crowded market.");
+    function askFollowupQuestion() {
+        const question = followupQuestion.value.trim();
+        if (question) {
+            // Add user question to conversation
+            conversationHistory.push({ role: 'user', content: question });
+            
+            // Show loading state
+            aiResponse.innerHTML += `<div class="user-question"><strong>You:</strong> ${question}</div><p>AI is thinking...</p>`;
+            followupQuestion.value = '';
+            
+            // Scroll to bottom
+            aiResponse.scrollTop = aiResponse.scrollHeight;
+            
+            // Get AI response
+            getAIResponse(currentTerm, question);
         }
-        
-        // Funding recommendations
-        if (fundingStatus === 'self') {
-            recommendations.push("Maintain lean operations and focus on generating revenue quickly.");
-        } else {
-            recommendations.push("Set clear milestones for your funding and track progress rigorously.");
-        }
-        
-        // Team recommendations
-        if (teamSize === 'small') {
-            recommendations.push("Consider outsourcing non-core functions to keep your team focused.");
-        } else if (teamSize === 'medium') {
-            recommendations.push("Invest in team development and clear role definitions.");
-        } else {
-            recommendations.push("Implement strong communication systems and culture-building activities.");
-        }
-        
-        // Pricing recommendations
-        if (pricingStrategy === 'cost') {
-            recommendations.push("Regularly review your costs and adjust prices accordingly.");
-        } else if (pricingStrategy === 'market') {
-            recommendations.push("Monitor competitors but don't get drawn into price wars.");
-        } else if (pricingStrategy === 'penetration') {
-            recommendations.push("Plan your pricing roadmap for when you need to increase prices.");
-        } else {
-            recommendations.push("Invest in branding and customer experience to justify premium prices.");
-        }
-        
-        return recommendations.join(' ');
     }
-});
+
+    function getAIResponse(term, question) {
+        // In a real implementation, this would call an actual AI API
+        // For this demo, we'll use simulated responses
+        
+        const responses = {
+            marketSize: {
+                initial: "Market size refers to the total number of potential customers or the total revenue potential for your product or service. Choosing the right market size is crucial - too small and you may limit growth, too large and you may face intense competition. Small markets (<1M) are easier to penetrate but have limited upside. Medium markets (1M-100M) offer good balance. Large markets (>100M) have high potential but require significant resources.",
+                followups: {
+                    "How do I estimate market size?": "To estimate market size: 1) Define your target customer, 2) Research industry reports, 3) Analyze competitors' performance, 4) Consider total addressable market (TAM), serviceable available market (SAM), and serviceable obtainable market (SOM).",
+                    "What's better for a startup?": "For most startups, a medium market is ideal - large enough for growth but not so large that you can't compete. However, if you have a niche product, a small focused market might be better."
+                }
+            },
+            fundingStatus: {
+                initial: "Funding status indicates how your business is financed. Self-financing (bootstrapping) means using personal funds or revenue, giving you full control but potentially slower growth. Secured funding means you've raised money from investors, allowing faster scaling but with expectations for returns. Each approach has trade-offs in terms of control, risk, and growth potential.",
+                followups: {
+                    "When should I seek investors?": "Consider seeking investors when: 1) You've validated your product with early customers, 2) You need capital to scale quickly, 3) You're in a competitive market where speed matters, 4) You're ready to give up some control for growth.",
+                    "How much should I self-fund?": "A good rule is to self-fund until you've proven your concept (MVP, some traction). This gives you more negotiating power with investors later."
+                }
+            },
+            // Similar response structures for other terms...
+            teamSize: {
+                initial: "Team size affects your company's capabilities, culture, and overhead. Small teams (1-5) are agile with low costs but limited bandwidth. Medium teams (5-20) can handle more complexity while maintaining cohesion. Large teams (>20) enable specialization but require more management. Start small and grow as needed, being careful not to scale too quickly.",
+                followups: {}
+            },
+            pricingStrategy: {
+                initial: "Your pricing strategy impacts positioning and profitability. Cost-based pricing ensures margins but may ignore value. Market-based pricing matches competitors but can lead to price wars. Penetration pricing (low initial prices) helps gain share but may devalue your product. Premium pricing requires strong differentiation but yields higher margins. The best approach depends on your product, market, and goals.",
+                followups: {}
+            },
+            difficulty: {
+                initial: "Industry difficulty reflects competitive intensity and barriers to success. Low difficulty (0.1-0.3) means easier entry but potentially lower rewards. Medium (0.4-0.7) offers balanced competition. High (0.8-1.0) indicates tough competition but potentially greater rewards for winners. Choose strategies that match your difficulty level - differentiation in tough markets, execution in moderate ones.",
+                followups: {}
+            },
+            blackSwan: {
+                initial: "Black Swan events are unpredictable, high-impact occurrences that can dramatically affect your business (economic crashes, pandemics, etc.). The frequency setting determines how often these might occur in simulation. While you can't predict them, you can build resilience through: 1) Cash reserves, 2) Flexible operations, 3) Diverse revenue streams, 4) Scenario planning.",
+                followups: {}
+            }
+        };
+
+        // Simulate API delay
+        setTimeout(() => {
+            let responseText = '';
+            
+            if (!question) {
+                // Initial response
+                responseText = `<div class="ai-message"><strong>AI:</strong> ${responses[term].initial}</div>`;
+            } else {
+                // Follow-up response - check if we have a specific answer
+                const specificAnswer = responses[term].followups[question];
+                if (specificAnswer) {
+                    responseText = `<div class="ai-message"><strong>AI:</strong> ${specificAnswer}</div>`;
+                } else {
+                    responseText = `<div class="ai-message"><strong>AI:</strong> I understand you're asking about ${question}. While I don't have a specific answer prepared, generally for ${getTermName(term)}, it's important to consider your specific business context and goals when making decisions in this area.</div>`;
+                }
+            }
+            
+            // Remove "Loading" and add response
+            aiResponse.innerHTML = aiResponse.innerHTML.replace('<p>Loading AI response...</p>
