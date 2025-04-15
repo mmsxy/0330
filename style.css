@@ -1,0 +1,262 @@
+/* Global Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f5f7fa;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #7f8c8d;
+    font-size: 1.1em;
+}
+
+/* Welcome Screen */
+.welcome-screen {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.welcome-content {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.welcome-content h2 {
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+.welcome-content p {
+    margin-bottom: 15px;
+    color: #34495e;
+}
+
+/* Simulator Screen */
+.simulator-screen {
+    padding: 20px;
+}
+
+.simulator-header {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.simulator-header h2 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.form-section {
+    margin-bottom: 25px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+.form-section h3 {
+    margin-bottom: 15px;
+    color: #3498db;
+}
+
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+input[type="radio"], input[type="checkbox"] {
+    cursor: pointer;
+}
+
+input[type="range"] {
+    width: 100%;
+    margin: 15px 0;
+}
+
+.info-tooltip {
+    display: inline-block;
+    margin-left: 10px;
+    cursor: pointer;
+    color: #3498db;
+    font-weight: bold;
+}
+
+.tooltip-content {
+    display: none;
+    background-color: white;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+    border-left: 4px solid #3498db;
+}
+
+/* Buttons */
+.btn {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+}
+
+.btn:hover {
+    background-color: #2980b9;
+}
+
+.navigation {
+    text-align: right;
+    margin-top: 30px;
+}
+
+.close-tooltip {
+    background-color: #e74c3c;
+    margin-top: 10px;
+}
+
+.close-tooltip:hover {
+    background-color: #c0392b;
+}
+
+/* Results Screen */
+.results-screen {
+    padding: 30px;
+    text-align: center;
+}
+
+.results-screen h2 {
+    margin-bottom: 30px;
+    color: #2c3e50;
+}
+
+#resultsContent {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    
+    .form-section {
+        padding: 15px;
+    }
+    /* Chat Screen Styles */
+.chat-screen {
+    padding: 30px;
+    text-align: center;
+}
+
+.chat-header {
+    margin-bottom: 30px;
+}
+
+.chat-container {
+    max-width: 700px;
+    margin: 0 auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.chat-messages {
+    height: 400px;
+    overflow-y: auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    text-align: left;
+}
+
+.message {
+    margin-bottom: 15px;
+    padding: 10px 15px;
+    border-radius: 18px;
+    max-width: 80%;
+}
+
+.user-message {
+    background-color: #3498db;
+    color: white;
+    margin-left: auto;
+    border-bottom-right-radius: 5px;
+}
+
+.ai-message {
+    background-color: #ecf0f1;
+    margin-right: auto;
+    border-bottom-left-radius: 5px;
+}
+
+/* 更新后的聊天输入框样式 - 保证生效版本 */
+.chat-input input {
+    flex-grow: 1;
+    padding: 15px 20px !important;
+    border: 1px solid #ddd !important;
+    border-radius: 25px !important;
+    margin: 0 auto 10px auto !important;
+    font-size: 1.1em !important;
+    width: 80% !important;
+    display: block !important;
+    height: 50px !important; /* 明确设置高度 */
+    box-sizing: border-box !important;
+}
+
+/* 同时确保容器也适当调整 */
+.chat-input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    background-color: white;
+    border-top: 1px solid #eee;
+}
+
+
+
+#backToStartBtn {
+    margin-top: 30px;
+}
+}
